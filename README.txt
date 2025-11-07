@@ -1,11 +1,11 @@
 Dynamic/Self-Updating Python-based news-article scraper.
 
-
 Install using:
 
     bash setup.sh
 
 Then run:
+
     python3 main_scraper.py 
 or
     python3 batch_scraper.py sample_articles.txt
