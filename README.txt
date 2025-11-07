@@ -9,12 +9,13 @@ or --python3 batch_scraper.py
 (batch_scraper will need a .txt file as an input containing links to all news articles, Sample_articles.txt is provided, 
 run using "python3 batch_scraper.py sample_articles.txt")
 
+(IMPORTANT, There is currently no check in place for veryfying whether the URL is actually a news Article, it is assumed by default)
+
 Flow of Program-
 
 Given an input URL, Extracts Domain name for it, 
 domain = extracted.domain
 
-(IMPORTANT, There is currently no check in place for veryfying whether the URL is actually a news Article, it is assumed by default)
 
 First Check Databse if Domain name already exists
 1. Author
