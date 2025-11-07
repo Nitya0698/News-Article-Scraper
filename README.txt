@@ -1,98 +1,60 @@
-Dynamic/Self-Updating python based news-article scraper.
+Dynamic/Self-Updating Python-based news-article scraper.
 
---install using 
---bash setup.sh
+Install using:
+    bash setup.sh
 
-Then --python3 main_scraper.py
-or --python3 batch_scraper.py
+Then run:
+    python3 main_scraper.py
+or
+    python3 batch_scraper.py
 
-(batch_scraper will need a .txt file as an input containing links to all news articles, Sample_articles.txt is provided, 
-run using "python3 batch_scraper.py sample_articles.txt")
+The batch scraper requires a `.txt` file containing links to news articles; a sample file `Sample_articles.txt` is provided.
+Run it using:
+    python3 batch_scraper.py sample_articles.txt
 
-(IMPORTANT, There is currently no check in place for veryfying whether the URL is actually a news Article, it is assumed by default)
+IMPORTANT: There is currently no check to verify whether the URL is a valid news article; it is assumed by default.
 
-Flow of Program-
+Flow of the program:
+    Given an input URL, the domain is extracted using `domain = extracted.domain`.
+    First, the database is checked to see if the domain already exists for the following fields:
+        1. Author
+        2. Date Published
+        3. Time Published
+        4. Title of Article
+        5. Content of Article
 
-Given an input URL, Extracts Domain name for it, 
-domain = extracted.domain
+    If the domain is not in the database, the LLM is called to fetch fresh XPaths and store them.
+    Otherwise, previous XPaths are fetched, validated, and used to extract content via `extract_content_with_xpaths()`.
+    Each field is validated using `validate_extracted_fields()`.
 
+    Validation constraints include:
+        1. Author not empty and < 25 words
+        2. Date not empty
+        3. Time not empty
+        4. Title not empty and > 10 words
+        5. Content not empty and > 100 words
+        6. Keyword overlap between Title and Content ≥ 50%
+    These settings can be adjusted in the code.
 
-First Check Databse if Domain name already exists
-1. Author
-2. Date Published
-3. Time Published
-4. Title of Article
-5. Content of Article
+    If any field fails validation, only the failed fields are sent again to the LLM,
+    which returns a new XPath after scanning the cleaned HTML using BeautifulSoup:
+        cleaned_html = str(soup)
+    Validation is retried up to `MAX_RETRIES = 3`.
+    If fields still fail, setting `ENABLE_DIRECT_LLM_FALLBACK = True` sends all failed fields directly to the LLM to fetch content.
 
-If Domain Name is not in database, Call LLM to fetch fresh XPATHS and store them.
+    All final content is saved to the ARTICLES table, and validated XPaths are stored in TRACKING_DOMAINS.
+    Only the 5 most recent XPaths are used, making the system self-healing and updating.
 
-otherwise fetch previous XPATHS, loop through each of them and check if validation works or not.
+Helper files include:
+    LLM_XPATH_GENERATION.py (LLM prompts for fetching XPaths)
+    keyword_matcher.py (logic for keyword matching)
+    Create_Tracking_Domains_Database.py and Create_Articles_Database.py (database schemas)
+    batch_scraper.py (runs multiple articles sequentially)
 
-Now fetch the content using extract_content_with_xpaths()
-
-Validate each field using validate_extracted_fields()
-
-Constraints Considered for validation-
-1. Author not empty and less than 25 words
-2. Date not empty
-3. Time not empty
-4. Title not empty and too short < 10 words
-5. Content not empty and not too short < 100 words
-6. Key word extraction in Title and Content, if keywords overlap atleast 50% then validate
-
-(All of these settings can be adjusted in code)
-
-Next if any field Fails Validation, Only the Fields that failed validation are sent again to the LLM, which now returns a new XPATH after scanning the article again, to save token cost the HTML is cleaned up first using BeautifulSoup
-cleaned_html = str(soup)
-
-Then with the new fields -
-Validation is done again, calling the validate_extracted_fields,
-This is done upto 3 times, which can be changed by changing this variable.
-MAX_RETRIES = 3
-
-If even after MAX_RETRIES, The LLM fails to fetch the correct XPATH, then a failsafe can be set, called ENABLE_DIRECT_LLM_FALLBACK = True 
-This will send all failed fields to the LLM and request the content directly.
-
-All content is then finally saved to the ARTICLES table.
-
-The XPATHS that worked/were validated are then uploaded to the TRACKING_DOMAINS table.
-
-Only the most_recent 5 XPATHS are used, so it is kind of self-healing and updating.
-
-
-
-
-Helper Files-
-
-LLM_XPATH_GENERATION.py 
-
-(Imported functions, contains LLM Prompts that fetch XPATHS)
-
-keyword_matcher.py 
-
-(Imported function, contains logic for keyword matching between Title and Content)
-
-Create_Tracking_Domains_Database.py
-Create_Articles_Database.py
-
-(Contains Database Schema, will create a new database when run)
-
-batch_scraper.py
-
-(Batch scraper, Can create a articles.txt containing Article URL's and will run them one by one)
-
-Helper Functions in Main_Scraper.py-
-
-1. extract_datetime_from_elements()
-//Extract datetime from Xpath
-
-2. extract_content_with_xpaths()
-//Extract Content using xpath
-
-3. validate_extracted_fields
-// Validate using conditions for verifying content etc.
-
-
+Helper functions in main_scraper.py include:
+    extract_datetime_from_elements() - Extract datetime from XPath
+    extract_content_with_xpaths() - Extract content using XPath
+    validate_extracted_fields() - Validate extracted data per defined conditions
 
 
 
