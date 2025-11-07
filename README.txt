@@ -2,6 +2,7 @@ Dynamic/Self-Updating Python-based news-article scraper.
 
 
 Install using:
+
     bash setup.sh
 
 Then run:
