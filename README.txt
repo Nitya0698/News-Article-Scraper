@@ -155,7 +155,7 @@ KEY VALIDATION RULES:
 
 
 
-Fututre Updates-
+Fututre Updates/Scope for Improvement -
 
 1)Add a new table to track where the Hard_LLM call is being needed, upon observation it is mostly in author names, since different websites have different bylines, including some bundling it together with the byline without any different css/selector for it.
 Then store those domains/links/category to a new table to understand where model is failing and improve cost furhter.
