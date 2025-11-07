@@ -12,6 +12,9 @@ or
 
 IMPORTANT: There is currently no check to verify whether the URL is a valid news article; it is assumed by default.
 
+Model_Used- 'gpt-4o-mini'
+(0.30$-0.50$ per 300-400 articles/links)
+
 Flow of the program:
     Given an input URL, the domain is extracted using `domain = extracted.domain`.
     First, the database is checked to see if the domain already exists for the following fields:
