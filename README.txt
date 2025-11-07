@@ -65,16 +65,28 @@ Helper functions in main_scraper.py include:
 
 
 TL:DR;-
+Set these and rename env to .env
 
-Set API key in env,
-OPENAI_API_KEY = ""
-
-TOTAL_LLM_CALLS='0'(will auto-update no need to touch, unless want to reset)
+        OPENAI_API_KEY = ""
+        TOTAL_LLM_CALLS='0'(will auto-update no need to touch, unless want to reset)
 
 In Main_Scraper.py
 
-MAX_RETRIES = 3 (Max amount of times LLM is called in case base XPATHS fail)
-ENABLE_DIRECT_LLM_FALLBACK = True (Set hard-fallback in case XPATHS fail)
+        MAX_RETRIES = 3 (Max amount of times LLM is called in case base XPATHS fail)
+        ENABLE_DIRECT_LLM_FALLBACK = True (Set hard-fallback in case XPATHS fail)
+
+Adjust Prompt/LLM settings in LLM_XPATH_GENERATION.py -
+           
+        response_ai = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": extraction_prompt},
+                {"role": "user", "content": cleaned_html}
+            ],
+            temperature=0.3
+        )
+
+
 
                         WEB SCRAPER FLOW
 
