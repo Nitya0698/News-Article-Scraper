@@ -15,7 +15,7 @@ from LLM_XPATH_GENERATION import generate_initial_xpaths, retry_failed_xpaths
 
 #SET TO FALSE IF LLM USAGE TOO HIGH, ENSURES ALL FIELDS ARE FETCHED IN CASE NO XPATH WORKS
 ENABLE_DIRECT_LLM_FALLBACK = True 
-MAX_RETRIES = 3
+MAX_RETRIES = 2
 retry_count = 0
 
 load_dotenv()
