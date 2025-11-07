@@ -1,0 +1,8 @@
+requests
+tldextract
+lxml
+python-dateutil
+beautifulsoup4
+openai
+python-dotenv
+rake-nltk
