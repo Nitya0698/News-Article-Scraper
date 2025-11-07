@@ -1,12 +1,13 @@
 Dynamic/Self-Updating python based news-article scraper.
 
-Run using 
+install using 
 bash setup.sh
 
 Then python3 main_scraper.py
 or python3 batch_scraper.py
 
-batch_scraper will need a .txt file as an input containing links to all news articles.
+batch_scraper will need a .txt file as an input containing links to all news articles, Sample_articles.txt is provided, 
+run using "python3 batch_scraper.py sample_articles.txt"
 
 Flow of Program-
 
