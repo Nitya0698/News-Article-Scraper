@@ -141,5 +141,14 @@ KEY VALIDATION RULES:
 
 
 
+Fututre Updates-
+
+1)Add a new table to track where the Hard_LLM call is being needed, upon observation it is mostly in author names, since different websites have different bylines, including some bundling it together with the byline without any different css/selector for it.
+Then store those domains/links/category to a new table to understand where model is failing and improve cost furhter.
+
+2) Improve Validation Algorithm, to check for title, content etc.
+
+3) Improve the XPATH fetching algorithm, currently it is the most recent 5 XPATHS that work, change it so that each XPATH now has a confidence rating that increases when it succesfully validates, also to check whether validated content is correct or not, since sometimes despite validation outputs are broken.
+
 
 
