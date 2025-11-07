@@ -14,7 +14,7 @@ def extract_words_from_phrases(phrases):
     return words
 
 
-def compare_texts(text1, text2, threshold=50, verbose=False):
+def compare_texts(text1, text2, threshold=35, verbose=False):
     
     # Initialize RAKE
     rake = Rake()
