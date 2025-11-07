@@ -86,6 +86,7 @@ Adjust Prompt/LLM settings in LLM_XPATH_GENERATION.py -
             temperature=0.3
         )
 
+        (Adjust all three prompt calls in generate_initial_xpaths(), retry_failed_xpaths(), direct_llm_extraction())
 
 
                         WEB SCRAPER FLOW
