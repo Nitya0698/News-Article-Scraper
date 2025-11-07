@@ -1,22 +1,21 @@
 Dynamic/Self-Updating Python-based news-article scraper.
 
+
 Install using:
     bash setup.sh
 
 Then run:
-    python3 main_scraper.py
+    python3 main_scraper.py 
 or
-    python3 batch_scraper.py
-
-The batch scraper requires a `.txt` file containing links to news articles; a sample file `Sample_articles.txt` is provided.
-Run it using:
     python3 batch_scraper.py sample_articles.txt
+
 
 IMPORTANT: There is currently no check to verify whether the URL is a valid news article; it is assumed by default.
 
 Flow of the program:
     Given an input URL, the domain is extracted using `domain = extracted.domain`.
     First, the database is checked to see if the domain already exists for the following fields:
+
         1. Author
         2. Date Published
         3. Time Published
@@ -28,30 +27,33 @@ Flow of the program:
     Each field is validated using `validate_extracted_fields()`.
 
     Validation constraints include:
+
         1. Author not empty and < 25 words
         2. Date not empty
         3. Time not empty
         4. Title not empty and > 10 words
         5. Content not empty and > 100 words
         6. Keyword overlap between Title and Content ≥ 50%
-    These settings can be adjusted in the code.
+        (These settings can be adjusted in the code)
 
     If any field fails validation, only the failed fields are sent again to the LLM,
     which returns a new XPath after scanning the cleaned HTML using BeautifulSoup:
         cleaned_html = str(soup)
-    Validation is retried up to `MAX_RETRIES = 3`.
+    Validation is retried up to `MAX_RETRIES = 2`.
     If fields still fail, setting `ENABLE_DIRECT_LLM_FALLBACK = True` sends all failed fields directly to the LLM to fetch content.
 
     All final content is saved to the ARTICLES table, and validated XPaths are stored in TRACKING_DOMAINS.
     Only the 5 most recent XPaths are used, making the system self-healing and updating.
 
 Helper files include:
+
     LLM_XPATH_GENERATION.py (LLM prompts for fetching XPaths)
     keyword_matcher.py (logic for keyword matching)
     Create_Tracking_Domains_Database.py and Create_Articles_Database.py (database schemas)
     batch_scraper.py (runs multiple articles sequentially)
 
 Helper functions in main_scraper.py include:
+
     extract_datetime_from_elements() - Extract datetime from XPath
     extract_content_with_xpaths() - Extract content using XPath
     validate_extracted_fields() - Validate extracted data per defined conditions
